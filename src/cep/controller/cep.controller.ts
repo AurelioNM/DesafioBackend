@@ -6,6 +6,6 @@ export class CepController {
   constructor(private readonly cepService: CepService) {}
   @Get()
   getHello() {
-    return this.cepService.getCepFromPublicApi();
+    return this.cepService.getCep();
   }
 }

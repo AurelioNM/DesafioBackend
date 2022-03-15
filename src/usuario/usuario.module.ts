@@ -5,9 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
 import { CepController } from 'src/cep/controller/cep.controller';
 import { CepService } from 'src/cep/service/cep.service';
+import { CepModule } from 'src/cep/cep.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Usuario])],
+  imports: [TypeOrmModule.forFeature([Usuario]), HttpModule, CepModule],
   controllers: [UsuarioController, CepController],
   providers: [UsuarioService, CepService],
 })
