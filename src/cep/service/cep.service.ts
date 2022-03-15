@@ -5,14 +5,14 @@ import { Injectable } from '@nestjs/common';
 export class CepService {
   constructor(private httpService: HttpService) {}
 
-  CEP_URL = 'https://viacep.com.br/ws/01001000/json/';
-
-  async getCep() {
-    return this.getJsonFromPublicAPI();
+  async getCep(cep: string) {
+    return this.getJsonFromPublicAPI(cep);
   }
 
-  async getJsonFromPublicAPI() {
-    const response = await this.httpService.get(this.CEP_URL).toPromise();
+  async getJsonFromPublicAPI(cep: string) {
+    const response = await this.httpService
+      .get(`https://viacep.com.br/ws/${cep}/json/`)
+      .toPromise();
     return response.data;
   }
 }
