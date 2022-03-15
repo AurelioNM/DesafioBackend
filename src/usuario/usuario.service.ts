@@ -10,8 +10,8 @@ export class UsuarioService {
     private readonly usuarioRepository: Repository<Usuario>,
   ) {}
 
-  create(createUsuarioDto: Usuario) {
-    return this.usuarioRepository.save(createUsuarioDto);
+  create(usuario: Usuario) {
+    return this.usuarioRepository.save(usuario);
   }
 
   findAll() {
@@ -22,8 +22,8 @@ export class UsuarioService {
     return this.usuarioRepository.findOne(cpf);
   }
 
-  updateByCPF(cpf: number, updateUsuarioDto: Usuario) {
-    return this.usuarioRepository.update({ cpf: cpf }, updateUsuarioDto);
+  updateByCPF(cpf: number, usuario: Usuario) {
+    return this.usuarioRepository.update({ cpf: cpf }, usuario);
   }
 
   removeByCPF(cpf: number) {
