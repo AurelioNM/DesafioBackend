@@ -1,29 +1,109 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Usuario } from './entities/usuario.entity';
 import { UsuarioService } from './usuario.service';
 
 describe('UsuarioService', () => {
   let service: UsuarioService;
+  let usuarioRepository: Repository<Usuario>;
+
+  const USUARIO_REPOSITORY_TOKEN = getRepositoryToken(Usuario);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsuarioService,
         {
-          provide: getRepositoryToken(Usuario),
+          provide: USUARIO_REPOSITORY_TOKEN,
           useValue: {
-            save: jest.fn(),
-            find: jest.fn(),
+            delete: jest.fn(),
           },
         },
       ],
     }).compile();
 
     service = module.get<UsuarioService>(UsuarioService);
+    usuarioRepository = module.get<Repository<Usuario>>(
+      USUARIO_REPOSITORY_TOKEN,
+    );
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  describe('create', () => {
+    it('should create a usuario', async () => {
+      const usuario = new Usuario();
+      usuario.nome = 'nome';
+      usuario.telefone = 123456789;
+      usuario.cpf = 123456789;
+      usuario.cep = 12345678;
+      usuario.logradouro = 'logradouro';
+      usuario.cidade = 'cidade';
+      usuario.estado = 'estado';
+
+      const save = jest.fn().mockResolvedValue(usuario);
+      usuarioRepository.save = save;
+
+      const result: Usuario = await service.create(usuario);
+
+      expect(result).toStrictEqual(usuario);
+      expect(save).toHaveBeenCalledWith(usuario);
+    });
   });
+
+  describe('findAll', () => {
+    it('should find all usuarios', async () => {
+      const find = jest.fn().mockResolvedValue([new Usuario()]);
+      usuarioRepository.find = find;
+
+      const result: Usuario[] = await service.findAll();
+
+      expect(result).toStrictEqual([new Usuario()]);
+      expect(find).toHaveBeenCalled();
+    });
+  });
+
+  describe('findByCPF', () => {
+    it('should find a usuario by cpf', async () => {
+      const findOne = jest.fn().mockResolvedValue(new Usuario());
+      usuarioRepository.findOne = findOne;
+
+      const result: Usuario = await service.findByCPF(123456789);
+
+      expect(result).toStrictEqual(new Usuario());
+      expect(findOne).toHaveBeenCalledWith(123456789);
+    });
+  });
+
+  // describe('updateByCPF', () => {
+  //   it('should update a usuario by cpf', async () => {
+  //     const usuario = new Usuario();
+  //     usuario.nome = 'nome';
+  //     usuario.telefone = 123456789;
+  //     usuario.cpf = 123456789;
+  //     usuario.cep = 12345678;
+  //     usuario.logradouro = 'logradouro';
+  //     usuario.cidade = 'cidade';
+  //     usuario.estado = 'estado';
+
+  //     const save = jest.fn().mockResolvedValue(usuario);
+  //     usuarioRepository.save = save;
+
+  //     const result = await service.updateByCPF(123456789, usuario);
+
+  //     expect(result).toStrictEqual(usuario);
+  //     expect(save).toHaveBeenCalledWith(usuario);
+  //   });
+  // });
+
+  // describe('removeByCPF', () => {
+  //   it('should remove a usuario by cpf', async () => {
+  //     const remove = jest.fn().mockResolvedValue(1);
+  //     usuarioRepository.remove = remove;
+
+  //     const result = await service.removeByCPF(123456789);
+
+  //     expect(result).toBe(1);
+  //     expect(remove).toHaveBeenCalledWith({ cpf: 123456789 });
+  //   });
+  // });
 });
