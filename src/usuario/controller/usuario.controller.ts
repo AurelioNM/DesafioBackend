@@ -7,8 +7,8 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { UsuarioService } from './usuario.service';
-import { Usuario } from './entities/usuario.entity';
+import { UsuarioService } from '../service/usuario.service';
+import { Usuario } from '../entities/usuario.entity';
 
 @Controller('usuario')
 export class UsuarioController {

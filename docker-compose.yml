@@ -12,6 +12,11 @@ services:
     # volumes:
     #   - ./db_scripts:/docker-entrypoint-initdb.d
 
+# redis:
+#     image: redis
+#     ports:
+#       - "6379:6379"
+
   adminer:
     image: adminer
     ports:
