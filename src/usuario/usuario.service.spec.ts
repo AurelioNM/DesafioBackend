@@ -16,9 +16,7 @@ describe('UsuarioService', () => {
         UsuarioService,
         {
           provide: USUARIO_REPOSITORY_TOKEN,
-          useValue: {
-            delete: jest.fn(),
-          },
+          useValue: {},
         },
       ],
     }).compile();
@@ -74,36 +72,49 @@ describe('UsuarioService', () => {
     });
   });
 
-  // describe('updateByCPF', () => {
-  //   it('should update a usuario by cpf', async () => {
-  //     const usuario = new Usuario();
-  //     usuario.nome = 'nome';
-  //     usuario.telefone = 123456789;
-  //     usuario.cpf = 123456789;
-  //     usuario.cep = 12345678;
-  //     usuario.logradouro = 'logradouro';
-  //     usuario.cidade = 'cidade';
-  //     usuario.estado = 'estado';
+  describe('updateByCPF', () => {
+    it('should update a usuario by cpf', async () => {
+      const usuario = new Usuario();
+      usuario.nome = 'nome';
+      usuario.telefone = 123456789;
+      usuario.cpf = 123456789;
+      usuario.cep = 12345678;
+      usuario.logradouro = 'logradouro';
+      usuario.cidade = 'cidade';
+      usuario.estado = 'estado';
 
-  //     const save = jest.fn().mockResolvedValue(usuario);
-  //     usuarioRepository.save = save;
+      const save = jest.fn().mockResolvedValue(usuario);
+      usuarioRepository.update = save;
 
-  //     const result = await service.updateByCPF(123456789, usuario);
+      const result = await service.updateByCPF(123456789, usuario);
 
-  //     expect(result).toStrictEqual(usuario);
-  //     expect(save).toHaveBeenCalledWith(usuario);
-  //   });
-  // });
+      expect(result).toStrictEqual(usuario);
+    });
+  });
 
-  // describe('removeByCPF', () => {
-  //   it('should remove a usuario by cpf', async () => {
-  //     const remove = jest.fn().mockResolvedValue(1);
-  //     usuarioRepository.remove = remove;
+  describe('removeByCPF', () => {
+    it('should remove a usuario by cpf', async () => {
+      const usuario = new Usuario();
+      usuario.nome = 'nome';
+      usuario.telefone = 123456789;
+      usuario.cpf = 123;
+      usuario.cep = 12345678;
+      usuario.logradouro = 'logradouro';
+      usuario.cidade = 'cidade';
+      usuario.estado = 'estado';
 
-  //     const result = await service.removeByCPF(123456789);
+      const save = jest.fn().mockResolvedValue(usuario);
+      usuarioRepository.save = save;
 
-  //     expect(result).toBe(1);
-  //     expect(remove).toHaveBeenCalledWith({ cpf: 123456789 });
-  //   });
-  // });
+      await service.create(usuario);
+
+      const remove = jest.fn().mockResolvedValue(1);
+      usuarioRepository.delete = remove;
+
+      const result = await service.removeByCPF(123);
+
+      expect(result).toBe(1);
+      expect(remove).toHaveBeenCalledWith({ cpf: 123 });
+    });
+  });
 });
