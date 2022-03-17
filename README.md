@@ -1,19 +1,17 @@
-## Description
-
-
 ## Installation
 
 ```bash
 $ npm install
 ```
 
-## Running the app
-
 ```bash
-# development
+# Run Unit tests
+$ npm run test
+
+## Run app
+$ docker-compose up -d
 $ npm run start
 
-## Test
-```bash
-# unit tests
-$ npm run test
+
+## Swagger UI
+http://localhost:3000/doc
